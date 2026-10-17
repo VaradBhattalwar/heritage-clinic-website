@@ -45,7 +45,7 @@ export default function ChatbotWidget({ onOpenBookingModal }: ChatbotWidgetProps
   // 1. Enter your n8n webhook URL below (e.g. "https://your-n8n.example.com/webhook/chat")
   // 2. Uncomment the fetch call inside sendToN8nBot()
   // =========================================================================
-  const N8N_WEBHOOK_URL = ""; // <-- PASTE YOUR N8N WEBHOOK URL HERE
+  const N8N_WEBHOOK_URL = "https://oyik.cloud/webhook/1a2d6dba-0635-44a6-bdb9-e3a478a5de5f/chat"; // <-- PASTE YOUR N8N WEBHOOK URL HERE
 
   const sendToN8nBot = async (userMessage: string) => {
     setIsTyping(true);
