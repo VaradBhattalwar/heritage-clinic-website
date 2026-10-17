@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import { createChat } from "@n8n/chat";
+import "@n8n/chat/style.css";
 import { MessageSquare, X, Send, Bot, Sparkles, ChevronDown } from "lucide-react";
 import { CLINIC_INFO } from "@/data/clinicData";
 
