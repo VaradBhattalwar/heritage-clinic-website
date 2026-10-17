@@ -69,7 +69,7 @@
   --chat--toggle--color: #ffffff;
 }
 
-/* Hide default n8n toggle button so our custom floating launcher seamlessly controls it */
+/* Hide default n8n toggle button so our custom floating launcher controls it */
 .chat-window-toggle {
   display: none !important;
 }
@@ -78,9 +78,136 @@
 .chat-window-wrapper .chat-window {
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
   border: 1px solid #e2e8f0 !important;
+  background-color: #ffffff !important;
 }
 
-/* Responsive mobile adjustments */
+/* =========================================================================
+   Layout Fixes: Ensure Chat Input and Send Button Are Visible & Usable
+   ========================================================================= */
+.chat-layout {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  overflow: hidden !important;
+  background-color: #ffffff !important;
+}
+
+.chat-layout .chat-header {
+  flex-shrink: 0 !important;
+}
+
+.chat-layout .chat-body {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  background-color: #f8fafc !important;
+}
+
+.chat-layout .chat-footer {
+  flex-shrink: 0 !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  background-color: #ffffff !important;
+  border-top: 1px solid #e2e8f0 !important;
+  padding: 0.75rem !important;
+  z-index: 20 !important;
+}
+
+/* Message input container and textarea */
+.chat-input,
+.chat-inputs {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  gap: 0.5rem !important;
+}
+
+.chat-input textarea,
+textarea[data-test-id="chat-input"] {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  flex: 1 1 auto !important;
+  min-height: 40px !important;
+  max-height: 100px !important;
+  color: #1e293b !important;
+  background-color: #f1f5f9 !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 0.75rem !important;
+  padding: 0.6rem 0.85rem !important;
+  font-size: 0.875rem !important;
+  line-height: 1.25rem !important;
+  outline: none !important;
+  resize: none !important;
+  font-family: inherit !important;
+}
+
+.chat-input textarea:focus,
+textarea[data-test-id="chat-input"]:focus {
+  border-color: #006bc9 !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 0 0 2px rgba(0, 107, 201, 0.2) !important;
+}
+
+/* Send button styling */
+.chat-inputs-controls {
+  display: flex !important;
+  align-items: center !important;
+  flex-shrink: 0 !important;
+}
+
+.chat-input-send-button {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 0.75rem !important;
+  background: #006bc9 !important;
+  color: #ffffff !important;
+  border: none !important;
+  cursor: pointer !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition: background-color 0.15s ease, transform 0.1s ease !important;
+}
+
+.chat-input-send-button:hover:not(:disabled) {
+  background: #0156a3 !important;
+  transform: scale(1.04) !important;
+}
+
+.chat-input-send-button:disabled {
+  opacity: 0.4 !important;
+  cursor: not-allowed !important;
+}
+
+/* =========================================================================
+   Hide "Powered by n8n" Footer (Supported CSS Override)
+   ========================================================================= */
+.chat-powered-by,
+.chat-get-started-footer,
+.chat-footer .chat-powered-by,
+.chat-layout .chat-powered-by,
+a[href*="n8n.io"] {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  max-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* =========================================================================
+   Responsive Mobile Adjustments
+   ========================================================================= */
 @media (max-width: 640px) {
   .chat-window-wrapper {
     right: 0.75rem !important;
@@ -92,5 +219,17 @@
     height: calc(100dvh - 7.5rem) !important;
     max-height: 560px !important;
     border-radius: 1rem !important;
+  }
+  .chat-layout .chat-footer {
+    padding: 0.5rem 0.65rem !important;
+  }
+  .chat-input textarea,
+  textarea[data-test-id="chat-input"] {
+    font-size: 0.8125rem !important;
+    padding: 0.5rem 0.65rem !important;
+  }
+  .chat-input-send-button {
+    width: 36px !important;
+    height: 36px !important;
   }
 }

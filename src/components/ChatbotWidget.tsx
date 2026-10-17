@@ -29,7 +29,20 @@ export default function ChatbotWidget({ onOpenBookingModal }: ChatbotWidgetProps
           document.body.appendChild(chatTarget);
         }
 
-        // Initialize the official n8n embedded chat widget
+        // Generate or retrieve persistent sessionId for this visitor session
+        let persistentSessionId = "";
+        try {
+          persistentSessionId = localStorage.getItem("heritage_clinic_session") || "";
+          if (!persistentSessionId) {
+            persistentSessionId =
+              "session_" + Math.random().toString(36).substring(2, 11) + "_" + Date.now();
+            localStorage.setItem("heritage_clinic_session", persistentSessionId);
+          }
+        } catch {
+          persistentSessionId = "session_" + Date.now();
+        }
+
+        // Initialize the official n8n embedded chat widget with direct input rendering
         createChat({
           webhookUrl: N8N_CHAT_WEBHOOK_URL,
           webhookConfig: {
@@ -38,7 +51,9 @@ export default function ChatbotWidget({ onOpenBookingModal }: ChatbotWidgetProps
           },
           target: "#n8n-chat",
           mode: "window",
+          sessionId: persistentSessionId,
           showWelcomeScreen: false,
+          loadPreviousSession: false,
           defaultLanguage: "en",
           initialMessages: [
             "Hello! Welcome to Heritage Clinic. How can I assist you with our doctors, treatments, or scheduling today?",
@@ -47,8 +62,8 @@ export default function ChatbotWidget({ onOpenBookingModal }: ChatbotWidgetProps
             en: {
               title: "Heritage Clinic Assistant",
               subtitle: "Online Healthcare Support",
-              footer: "Heritage Clinic • Powered by n8n",
-              getStarted: "New Conversation",
+              footer: "", // Hidden per requirements
+              getStarted: "Start Chat",
               inputPlaceholder: "Type your health inquiry...",
               closeButtonTooltip: "Close Chat",
             },
@@ -57,11 +72,20 @@ export default function ChatbotWidget({ onOpenBookingModal }: ChatbotWidgetProps
 
         initializedRef.current = true;
 
-        // Monitor DOM to keep our floating launcher button icon (MessageSquare vs X) in sync
+        // Monitor DOM to:
+        // 1. Keep floating launcher button icon (MessageSquare vs X) in sync
+        // 2. Automatically advance past any "Get Started" screen if encountered
         const observer = new MutationObserver(() => {
+          // If a "Get Started" button appears, click it automatically to display input
+          const getStartedBtn = document.querySelector<HTMLButtonElement>(
+            ".chat-get-started button"
+          );
+          if (getStartedBtn) {
+            getStartedBtn.click();
+          }
+
           const chatWindow = document.querySelector(".chat-window");
           if (chatWindow) {
-            // Check if chat-window is currently visible / active
             const style = window.getComputedStyle(chatWindow);
             const isVisible =
               style.display !== "none" &&
